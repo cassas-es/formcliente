@@ -1,18 +1,61 @@
-<form id="formCliente">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario Cliente</title>
+</head>
+<body>
+
+  <form id="formCliente">
     <label for="nombre">Nombre:</label><br>
     <input type="text" id="nombre" name="nombre" required><br><br>
-  
+
     <label for="apellido1">Apellido 1:</label><br>
     <input type="text" id="apellido1" name="apellido1" required><br><br>
-  
+
     <label for="apellido2">Apellido 2:</label><br>
     <input type="text" id="apellido2" name="apellido2"><br><br>
-  
+
     <label for="telefono">Teléfono:</label><br>
     <input type="text" id="telefono" name="telefono" required><br><br>
-  
+
     <button type="submit">Enviar</button>
   </form>
-  
+
   <p id="respuesta" style="margin-top: 20px; color: green;"></p>
+
+  <script>
+  document.getElementById('formCliente').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const datos = {
+      nombre: document.getElementById('nombre').value,
+      apellido1: document.getElementById('apellido1').value,
+      apellido2: document.getElementById('apellido2').value,
+      telefono: document.getElementById('telefono').value
+    };
+
+    try {
+      const respuesta = await fetch('https://f8964591e9c9e7a18058875530e807.5e.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/e3914c25ab4c4332905afa90b97f2bcd/triggers/manual/paths/invoke/?api-version=1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+      });
+
+      if (respuesta.ok) {
+        document.getElementById('respuesta').textContent = 'Datos enviados correctamente.';
+      } else {
+        document.getElementById('respuesta').textContent = 'Error al enviar los datos.';
+      }
+    } catch (error) {
+      document.getElementById('respuesta').textContent = 'Error de conexión.';
+    }
+  });
+  </script>
+
+</body>
+</html>
+
   
